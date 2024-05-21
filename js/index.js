@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(){
         page += 1; getMonsters(page)})
 
     function renderMonster(resp){
-        console.log(resp.name)
+        
         let h2 = document.createElement('h2')
             h2.innerText= resp.name
             // monsterContainer.appendChild(h2)
@@ -27,19 +27,35 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     function getMonsters(page){
-        console.log(page)
         fetch(`http://localhost:3000/monsters/?_limit=50&_page=${page}`)
         .then(res=>res.json())
         .then(response=>{
-            console.log(page)
-            response.map(element => renderMonster(element))})
+            response.map(element => {
+                renderMonster(element)})})
 
         .catch(error=>console.log(error))}
 
-
-
-        // let i = 0; i < 50 < response.length; i++
-
-
+        
 
 })
+
+const form = document.getElementById('form')
+form.addEventListener('submit', getInput)
+
+function getInput(e){
+    e.preventDefault();
+    let nameInput = e.target.name.value;
+    let ageInput = e.target.age.value;
+    let descriptionInput = e.target.description.value
+    console.log(descriptionInput)
+    let postBody= {name: nameInput, age: ageInput, description: descriptionInput}
+    console.log(postBody)
+    fetch('http://localhost:3000/monsters', {
+        method: 'POST',
+        body: JSON.stringify(
+            postBody),
+        headers:
+            {"Content-Type": "application/json",
+            "Accept": "application/json"}}
+    
+        )}
